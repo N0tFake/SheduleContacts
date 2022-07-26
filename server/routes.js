@@ -5,6 +5,6 @@ const ContactController = require('./controller/ContactController')
 const routes = express.Router()
 
 routes.get('/contacts', ContactController.index)
-routes.post('/contacts', ContactController.store)
+routes.post('/contact', ContactController.store)
 
 module.exports = routes

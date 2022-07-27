@@ -1,0 +1,10 @@
+.Container-Contacts {
+    margin-left: 5em;
+    margin-right: 5em;
+    height: 75vh;
+}
+
+.Container-List-Contacts {
+    height: 100%;
+    overflow: auto;
+}

@@ -1,0 +1,66 @@
+button {
+    border-radius: 10px;
+    border: none;
+
+    width: 120px;
+    height: 35px;
+}
+
+button:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.inner {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Icons {
+    filter: brightness(65%);
+}
+
+#icon-new {
+    color: #01F104;
+}
+
+#icon-edit {
+    color: #CAFF03;
+}
+
+#icon-delete {
+    color: #FF0303;
+}
+
+
+
+.SpanBtn {
+    font-size: 1.8em;
+    filter: brightness(65%);
+}
+
+#novo-id {
+    color:  #01F104;
+}
+
+#editar-id {
+    color:  #CAFF03;
+}
+
+#excluir-id {
+    color:  #FF0303;
+}
+
+.Novo {
+    margin-top: 2em;
+    background-color: rgba(1, 241, 4, 0.4);
+}
+
+.Editar {
+    background-color: rgba(202, 255, 3, 0.4);
+}
+
+.Excluir {
+    background-color: rgba(255, 3, 3, 0.4);
+}

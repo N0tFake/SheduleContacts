@@ -1,0 +1,7 @@
+.subtitle {
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 15px 20px -20px;
+}

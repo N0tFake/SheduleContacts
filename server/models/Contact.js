@@ -6,7 +6,9 @@ class Contact extends Model {
             name: DataTypes.STRING,
             email: DataTypes.STRING,
             phone: DataTypes.STRING,
-            date_nasc: DataTypes.DATEONLY
+            date_nasc: DataTypes.DATEONLY,
+            photo_content: DataTypes.BLOB,
+            photo_name: DataTypes.STRING,
         }, {
             sequelize
         })

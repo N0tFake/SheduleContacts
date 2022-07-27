@@ -1,5 +1,4 @@
 const express = require('express')
-const { appendFile } = require('fs')
 const routes = require('./routes')
 
 require('./database/index')

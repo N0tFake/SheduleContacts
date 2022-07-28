@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Button } from '../Button'
+import { ImageProfile } from '../ImageProfile'
 
 import './styles.css'
 
 export const Contacts = () => {
 
     const [ contacts, setContacts ] = useState()
+
+    const path = '../../../temp/profile/anime.jpg'
 
     useEffect(() => {
         fetch('/contacts')
@@ -32,8 +35,7 @@ export const Contacts = () => {
                         <div key={data.id} className="card">
                             
                             <div className='container-profile'>
-                                <div className='img-profile'></div>
-
+                                <ImageProfile imageName={data.photo_name} />
                                 <div className='container-info'>
                                     <div>    
                                         <span>Nome: </span>

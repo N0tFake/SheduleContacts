@@ -14,13 +14,6 @@
     flex-direction: row;
 }
 
-.img-profile {
-    background-color: red;
-    width: 100px;
-    height: 100px;
-    margin-right: 2em;
-}
-
 .container-info {
     display: flex;
     flex-direction: column;

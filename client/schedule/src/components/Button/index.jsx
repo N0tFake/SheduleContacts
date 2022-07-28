@@ -32,7 +32,7 @@ export const Button = ({ name, onClick }) => {
     const idName = setIdName()
 
     return (
-        <button className={name} onClick={() => onClick}>
+        <button className={name} onClick={onClick}>
             <div className='inner'>
                 <Icon name={name}/>
                 <span className='SpanBtn' id={idName}>{name}</span>

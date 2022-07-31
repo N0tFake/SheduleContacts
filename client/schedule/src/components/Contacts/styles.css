@@ -20,7 +20,7 @@
     align-items: flex-start;
 }
 
-.container-btn {
+.container-btn-contacts {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

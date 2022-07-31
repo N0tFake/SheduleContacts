@@ -1,23 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button } from '../Button'
 import { ImageProfile } from '../ImageProfile'
+import { ContactContext } from '../../context/contacts_context'
 
 import './styles.css'
 
 export const Contacts = () => {
 
     const [ contacts, setContacts ] = useState()
-
-    const path = '../../../temp/profile/anime.jpg'
+    const [ state, dispatch ] = useContext(ContactContext)
 
     useEffect(() => {
-        fetch('/contacts')
-            .then(response => response.json())
-            .then(data => {
-                setContacts(data)
-            })
+        if( state.reload ){
+            fetch('/contacts')
+                .then(response => response.json())
+                .then(data => {
+                    setContacts(data)
+                })
+            dispatch({ type: 'reload' })
+        }
 
-    },[contacts])
+    })
 
     function handleEditContact() {
         console.log('teste')
@@ -35,7 +38,7 @@ export const Contacts = () => {
                         <div key={data.id} className="card">
                             
                             <div className='container-profile'>
-                                <ImageProfile imageName={data.photo_name} />
+                                <ImageProfile imageName={data.photo_name} contacts={contacts} />
                                 <div className='container-info'>
                                     <div>    
                                         <span>Nome: </span>
@@ -57,7 +60,7 @@ export const Contacts = () => {
 
                             </div>
 
-                            <div className='container-btn'>
+                            <div className='container-btn-contacts'>
                                 <Button name={"Editar"} onClick={handleEditContact}/>
                                 <Button name={"Excluir"} onClick={handleDeleteContacts}/>
                             </div>

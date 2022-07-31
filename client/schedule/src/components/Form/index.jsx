@@ -1,9 +1,13 @@
 import Modal from 'react-modal'
 import MaskedInput from "react-input-mask"
 import { Controller, useForm } from 'react-hook-form'
-import { PlusCircle } from 'phosphor-react'
+
+import { Content } from './components/button/content_submit'
+import { ContactContext } from '../../context/contacts_context'
 
 import './styles.css'
+import { useContext, useState } from 'react'
+import { ButtonSubmit } from './components/button/button._submit'
 
 const customStyles = {
     content: {
@@ -22,23 +26,54 @@ Modal.setAppElement('#root')
 
 export const FormContact = ({modalIsOpen, closeModal}) => {
 
-    const { register, control, handleSubmit, formState: { errors } }  = useForm();
+    const [ dispatch ] = useContext(ContactContext)
+    const { register, control, handleSubmit, formState: { errors }, reset }  = useForm();
+    const [imgBlob, setImgBlob] = useState()
+
+    function handleCloseModal(){
+        reset()
+        closeModal()
+    }
 
     const onSubmit = (data) => {
+
+        const reader = new FileReader()
+        reader.onload = (e) => {
+            setImgBlob(e.target.result)
+        }
+        reader.readAsDataURL(data.photo[0])
+
+        let temp = ''
+
+        if(data.photo[0].name.includes('.png')){
+            temp = imgBlob.replace('data:image/png;base64,', '')
+        }else if (data.photo[0].name.includes('.jpg')){
+            temp = imgBlob.replace('data:image/jpeg;base64,', '')
+        }
+        
+        setImgBlob(temp)
+
         const name = data.name
         const email = data.email
         const phone = data.phone
         const date_nasc = data.date_nasc
+        const photo_name = data.photo[0].name
+        const photo_content = temp
 
-        const contact = { name, email, phone, date_nasc }   
+        const contact = { name, email, phone, date_nasc, photo_name, photo_content }   
 
-        fetch('/contact', {
+        fetch('add/contact', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(contact)
         }).then(res => {
             console.log(res.json())
         }, [])
+
+        reset()
+        closeModal()
+        dispatch({ type: 'reload' })
+
     }
 
     return (
@@ -116,19 +151,16 @@ export const FormContact = ({modalIsOpen, closeModal}) => {
                 <div className='container-photo'>
                     <div>
                         <label>Foto: </label>
-                        <input type='file' {...register('photo', { required: true })} />
+                        <input {...register('photo', { required: true })} type='file'/>
                     </div>
                     {errors.photo && <span className='span-error'>Campo obrigatorio</span>}
                 </div>
 
                 <div className='container-btn'>
-                    <button onClick={closeModal}>Cancelar</button>
-                    <button className='btn' type="submit">
-                        <div className='inner-btn-submit'>
-                            <PlusCircle size={25} className="icon-submit-btn"/>
-                            Salvar
-                        </div>
-                    </button>
+                    <button onClick={handleCloseModal}>Cancelar</button>
+                    <ButtonSubmit>
+                        <Content />
+                    </ButtonSubmit>
                 </div>
             </form>
         </Modal>

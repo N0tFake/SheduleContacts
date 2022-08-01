@@ -2,4 +2,5 @@ logs
 *.log
 
 node_modules/
-src/config/
+server/config/
+server/temp/

@@ -1,6 +1,5 @@
 const Contact = require('../models/Contact')
 const fs = require('fs')
-const database = require('../config/database')
 
 module.exports = {
     async index(req, res) {
@@ -16,9 +15,12 @@ module.exports = {
     },
 
     async store(req, res) {
-        const { name, email, phone, date_nasc, photo_name} = req.body
 
-        const photo_content = base64_encode(photo_name)
+        const { name, email, phone, date_nasc, photo_name, photo_content} = req.body
+
+        /* saveImg(img, photo_name)
+        
+        const photo = base64_encode(photo_name) */
 
         const contact = await Contact.create({ 
             name: name, 
@@ -26,8 +28,35 @@ module.exports = {
             phone: phone, 
             date_nasc: date_nasc, 
             photo_content: photo_content, 
-            photo_name: photo_name 
+            photo_name: photo_name
         })
+
+        return res.json(contact)
+    },
+
+    async delete(req, res){
+        const { contact_id } = req.params
+        const contact = await Contact.findByPk(contact_id)
+
+        if(contact) await contact.destroy()
+
+        return res.json(contact)
+    },
+
+    async update(req, res){
+        const { contact_id } = req.params
+        const contact = await Contact.findByPk(contact_id)
+
+        const { name, email, phone, date_nasc, photo_name, photo_content} = req.body
+
+        if(contact){
+            if(name) contact.name = name 
+            if(email) contact.email = email
+            if(phone) contact.phone = phone
+            if(date_nasc) contact.date_nasc = date_nasc
+
+            await contact.save()
+        }
 
         return res.json(contact)
     },
@@ -35,10 +64,14 @@ module.exports = {
 
 function base64_decode(base64str, fileName){
     const bitmap = Buffer(base64str.toString(), 'base64')
-    fs.writeFileSync('server/temp/result/' + fileName + '', bitmap, 'binary')
+    fs.writeFileSync('client/schedule/temp/profiles/' + fileName + '', bitmap, 'binary')
+}
+
+function saveImg(file, fileName){
+    fs.writeFileSync('server/temp/photo/' + fileName + '', file)
 }
 
 function base64_encode(file) {
-    const bitmap = fs.readFileSync('server/temp/photo/' + file + '')
-    return Buffer(bitmap).toString('base64')
+    //const bitmap = fs.readFileSync('server/temp/photo/' + file + '')
+    return Buffer(file).toString('base64')
 }

@@ -3,5 +3,5 @@ logs
 
 node_modules/
 server/config/
-server/temp/
-client/schedule/temp
+server/temp/photo
+server/temp/result

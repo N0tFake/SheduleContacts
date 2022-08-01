@@ -2,6 +2,5 @@ logs
 *.log
 
 node_modules/
-server/config/
-server/temp/photo
-server/temp/result
+/server/config/
+server/temp/

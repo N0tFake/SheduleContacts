@@ -6,7 +6,7 @@ import { Content } from './components/button/content_submit'
 import { ContactContext } from '../../context/contacts_context'
 
 import './styles.css'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { ButtonSubmit } from './components/button/button._submit'
 
 const customStyles = {
@@ -26,9 +26,10 @@ Modal.setAppElement('#root')
 
 export const FormContact = ({modalIsOpen, closeModal}) => {
 
-    const [ dispatch ] = useContext(ContactContext)
+    const [ state, dispatch ] = useContext(ContactContext)
     const { register, control, handleSubmit, formState: { errors }, reset }  = useForm();
-    const [imgBlob, setImgBlob] = useState()
+    const imgRef = useRef()
+
 
     function handleCloseModal(){
         reset()
@@ -38,42 +39,43 @@ export const FormContact = ({modalIsOpen, closeModal}) => {
     const onSubmit = (data) => {
 
         const reader = new FileReader()
-        reader.onload = (e) => {
-            setImgBlob(e.target.result)
-        }
         reader.readAsDataURL(data.photo[0])
-
-        let temp = ''
-
-        if(data.photo[0].name.includes('.png')){
-            temp = imgBlob.replace('data:image/png;base64,', '')
-        }else if (data.photo[0].name.includes('.jpg')){
-            temp = imgBlob.replace('data:image/jpeg;base64,', '')
+        reader.onload = async (e) => {
+            imgRef.current = await e.target.result
         }
         
-        setImgBlob(temp)
+        setTimeout(() => {
+            let temp = ''
 
-        const name = data.name
-        const email = data.email
-        const phone = data.phone
-        const date_nasc = data.date_nasc
-        const photo_name = data.photo[0].name
-        const photo_content = temp
+            if(data.photo[0].name.includes('.png')){
+                temp = imgRef.current.replace('data:image/png;base64,', '')
+            }else if (data.photo[0].name.includes('.jpg')){
+                temp = imgRef.current.replace('data:image/jpeg;base64,', '')
+            }
+        
 
-        const contact = { name, email, phone, date_nasc, photo_name, photo_content }   
+            const name = data.name
+            const email = data.email
+            const phone = data.phone
+            const date_nasc = data.date_nasc
+            const photo_name = data.photo[0].name   
+            const photo_content = temp
 
-        fetch('add/contact', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(contact)
-        }).then(res => {
-            console.log(res.json())
-        }, [])
+            const contact = { name, email, phone, date_nasc, photo_name, photo_content }   
 
-        reset()
-        closeModal()
-        dispatch({ type: 'reload' })
+            fetch('add/contact', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(contact)
+            }).then(res => {
+                console.log(res.json())
+            }, [])
 
+            reset()
+            closeModal()
+            dispatch({ type: 'reload' })
+
+        }, 1000)
     }
 
     return (

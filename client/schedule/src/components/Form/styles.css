@@ -82,8 +82,26 @@
 
     font-size: 1.3em;
     color:  #01F104;
+    filter: brightness(65%);  
+}
+
+/* .submit {
+    background-color: rgba(1, 241, 4, 0.4);
+
+    border-radius: 10px;
+    border: none;
+
+    width: 120px;
+    height: 35px;
+
+    font-size: 1.3em;
+    color:  #01F104;
     filter: brightness(65%);
 }
+
+.submit:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+} */
 
 .inner-btn-submit {
     margin-left: 0.5em;

@@ -14,13 +14,20 @@ module.exports = {
         return res.json(contacts)
     },
 
+    async indexContact(req, res) {
+        const { contact_id } = req.params
+        const contact = await Contact.findByPk(contact_id)
+
+        /* contacts.forEach(item => {
+            base64_decode(item.photo_content, item.photo_name)
+        }) */
+
+        return res.json(contact)
+    },
+
     async store(req, res) {
 
         const { name, email, phone, date_nasc, photo_name, photo_content} = req.body
-
-        /* saveImg(img, photo_name)
-        
-        const photo = base64_encode(photo_name) */
 
         const contact = await Contact.create({ 
             name: name, 
